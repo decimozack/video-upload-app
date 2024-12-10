@@ -55,7 +55,7 @@ const WizardForm: React.FC = () => {
 
   return (
     <div className="container">
-      <h1 className="h1 display-1">Wizard Component</h1>
+      <div className="h5 display-5 mt-5">Video Upload Application</div>
       <div className="row justify-content-center">
         <div className="col-md-8 mt-4 d-flex justify-content-center">
           <nav aria-label="breadcrumb">

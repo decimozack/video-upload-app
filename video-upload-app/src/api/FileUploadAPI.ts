@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosProgressEvent } from 'axios';
 
-const FILE_UPLOAD_ENDPOINT = 'http://localhost:8000';
+const FILE_UPLOAD_ENDPOINT = process.env.REACT_APP_FILE_UPLOAD_ENDPOINT;
 const FileUploadAPI = {
   post: async (
     formData: FormData,
