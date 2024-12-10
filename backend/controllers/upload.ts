@@ -51,7 +51,7 @@ uploadRouter.post(
 
       await finished(dest);
 
-      console.log('upload done');
+      console.log(`upload of file ${req.file.originalname} completed`);
     } catch (err) {
       console.error('Error streaming file:', err);
       res.status(500).json({ error: 'Error streaming file' });
