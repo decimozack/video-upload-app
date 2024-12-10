@@ -5,18 +5,11 @@ import express, { NextFunction, Request, Response } from 'express';
 import multer from 'multer';
 
 const uploadRouter = express.Router();
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, 'tmp/uploads/');
-//   },
-//   filename: (req, file, cb) => {
-//     cb(null, Date.now() + '-' + file.originalname);
-//   },
-// });
+
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: {
-    files: 3, // Maximum of 3 files per request
+    files: 1,
   },
   fileFilter: (req, file, cb) => {
     if (
@@ -38,7 +31,7 @@ uploadRouter.post(
     const { title, startDateTime, postalCode } = req.body;
 
     if (!req.file) {
-      res.status(400).send('No file uploaded.');
+      res.status(400).json({ error: 'No file uploaded.' });
       return;
     }
 
@@ -58,22 +51,12 @@ uploadRouter.post(
 
       await finished(dest);
       //TODO: Save metadata and file info to the database here...
-
+      console.log('upload done');
       res.status(200).json({ message: 'Upload successful!' });
     } catch (err) {
       console.error('Error streaming file:', err);
-      res.status(500).send('Error streaming file');
+      res.status(500).json({ error: 'Error streaming file' });
     }
-    // dest.on('finish', () => {
-    //   //TODO: Save metadata and file info to the database here...
-
-    //   res.status(200).json({ message: 'Upload successful!' });
-    // });
-
-    // dest.on('error', (err: any) => {
-    //   console.error('Error streaming file:', err);
-    //   res.status(500).send('Error streaming file');
-    // });
   }
 );
 

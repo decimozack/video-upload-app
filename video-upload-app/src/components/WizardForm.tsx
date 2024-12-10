@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import StepOne from './StepOne';
 import StepTwo from './StepTwo';
+import StepThree from './StepThree';
 
 interface VideoMetadata {
   title: string;
   startDateTime: string;
-  location?: string;
+  postalCode?: string;
   agreement: boolean;
 }
 
@@ -15,7 +16,7 @@ const WizardForm: React.FC = () => {
   const [metadata, setMetadata] = useState<VideoMetadata>({
     title: '',
     startDateTime: '',
-    location: '',
+    postalCode: '',
     agreement: false,
   });
 
@@ -27,6 +28,18 @@ const WizardForm: React.FC = () => {
 
   const prevStep = () => {
     setCurrentStep((prev) => Math.max(prev - 1, 1));
+  };
+
+  const resetForm = () => {
+    setCurrentStep(1);
+    setVideoFile(null);
+    setMetadata({
+      title: '',
+      startDateTime: '',
+      postalCode: '',
+      agreement: false,
+    });
+    setUploadProgress(0);
   };
 
   const handleMetadataChange = (updatedMetadata: Partial<VideoMetadata>) => {
@@ -77,6 +90,16 @@ const WizardForm: React.FC = () => {
               onAgreementChange={handleMetadataChange}
               nextStep={nextStep}
               prevStep={prevStep}
+            />
+          )}
+          {currentStep === 3 && (
+            <StepThree
+              videoFile={videoFile}
+              metadata={metadata}
+              uploadProgress={uploadProgress}
+              setUploadProgress={setUploadProgress}
+              prevStep={prevStep}
+              resetForm={resetForm}
             />
           )}
         </div>

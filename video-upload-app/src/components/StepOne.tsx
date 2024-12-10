@@ -31,7 +31,7 @@ const StepOne: React.FC<StepOneProps> = ({
   });
 
   const validatePostalCode = (postalCode: string | undefined): string => {
-    if (typeof postalCode === 'undefined') {
+    if (typeof postalCode === 'undefined' || postalCode === '') {
       return '';
     }
 
