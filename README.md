@@ -72,7 +72,16 @@ A full-stack web application that allows users to upload videos through a multi-
 3. **Set Up the Database**:
    The backend will automatically create and sync the SQLite database (`metadata.sqlite`) when the server starts.
 
-4. **Run the Application**:
+4. Inside the `frontend` folder please duplicate the `.env.default` and replace the environment variables with neccessary information.
+
+   - Command:
+
+   ```bash
+   cd frontend
+   cp .env.default .env
+   ```
+
+5. **Run the Application**:
 
    - **Backend**:
      ```bash
@@ -85,7 +94,7 @@ A full-stack web application that allows users to upload videos through a multi-
      yarn start
      ```
 
-5. Open the app in your browser:
+6. Open the app in your browser:
    ```
    http://localhost:3000
    ```
@@ -103,7 +112,7 @@ A full-stack web application that allows users to upload videos through a multi-
   - **Body**:
     - `video` (file): The video file.
     - `title` (string): The title of the video (required).
-    - `startDateTime` (string): Start date and time in ISO format (required).
+    - `startDateTime` (string): Start date and time in Unix epoch timestamp format (required).
     - `postalCode` (string): Optional postal code
 - **200 OK Response**:
 
@@ -132,7 +141,7 @@ video-upload-app/
 │   ├── controllers/upload.ts  # Upload API
 │   ├── index.ts            # Main server file
 |   |── metadata.sqlite       # SQLite database file (generated after running backend)
-├── video-upload-app/
+├── frontend/
 │   ├── src/
 │   │   ├── components/   # Folder contains all the components for this application
         ├── api/          # Folder contains API layer that interacts with external system
@@ -144,7 +153,7 @@ video-upload-app/
 
 ## **Usage**
 
-1. Navigate to the upload page.
+1. Navigate to the home page.
 2. Follow the steps in the wizard:
    - Step 1: Upload a video file, preview it, and enter metadata.
    - Step 2: Agree to the terms and conditions.
