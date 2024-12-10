@@ -3,6 +3,7 @@ import { finished } from 'stream/promises';
 import { Readable } from 'stream';
 import express, { NextFunction, Request, Response } from 'express';
 import multer from 'multer';
+import Metadata from '../models/Metadata';
 
 const uploadRouter = express.Router();
 
@@ -40,22 +41,38 @@ uploadRouter.post(
       return;
     }
 
+    const filepath = `tmp/uploads/${
+      Date.now() + '-' + req?.file?.originalname
+    }`;
     try {
-      const filename = `tmp/uploads/${
-        Date.now() + '-' + req?.file?.originalname
-      }`;
-
-      const dest = fs.createWriteStream(filename);
+      const dest = fs.createWriteStream(filepath);
       const readable = Readable.from(req?.file?.buffer);
       readable.pipe(dest);
 
       await finished(dest);
-      //TODO: Save metadata and file info to the database here...
+
       console.log('upload done');
-      res.status(200).json({ message: 'Upload successful!' });
     } catch (err) {
       console.error('Error streaming file:', err);
       res.status(500).json({ error: 'Error streaming file' });
+    }
+
+    const startDateTimeObj = new Date(Number(startDateTime));
+    try {
+      // Save metadata to database
+      await Metadata.create({
+        title,
+        postalCode,
+        startDateTime: startDateTimeObj,
+        filePath: filepath,
+      });
+
+      res.status(200).json({
+        message: 'Upload successful!',
+      });
+    } catch (err) {
+      console.error('Error saving metadata:', err);
+      res.status(500).json({ error: 'Failed to save metadata.' });
     }
   }
 );

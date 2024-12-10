@@ -19,7 +19,10 @@ const FileUploadAPI = {
       return response;
     } catch (error) {
       if (error instanceof AxiosError) {
-        throw new Error(error.response?.data.error);
+        const errorMsg = error.response
+          ? error.response?.data.error
+          : error.message;
+        throw new Error(errorMsg);
       }
       throw new Error('An error occurred during upload. Please try again.');
     }

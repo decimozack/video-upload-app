@@ -52,7 +52,15 @@ const StepOne: React.FC<StepOneProps> = ({
   );
 
   const handleMetadataChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onMetadataChange({ [event.target.id]: event.target.value });
+    if (event.target.id === 'startDateTime') {
+      onMetadataChange({
+        startDateTime: datetimeLocalToUnixTimestamp(
+          event.target.value
+        ).toString(),
+      });
+    } else {
+      onMetadataChange({ [event.target.id]: event.target.value });
+    }
   };
 
   const validateInputs = (): boolean => {
@@ -73,6 +81,24 @@ const StepOne: React.FC<StepOneProps> = ({
     if (validateInputs()) {
       nextStep();
     }
+  };
+
+  const unixTimestampToDatetimeLocal = (timestamp: string): string => {
+    if (!timestamp) {
+      return '';
+    }
+    const date = new Date(Number(timestamp));
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+  };
+
+  const datetimeLocalToUnixTimestamp = (datetimeLocal: string): number => {
+    return new Date(datetimeLocal).getTime();
   };
 
   return (
@@ -114,7 +140,7 @@ const StepOne: React.FC<StepOneProps> = ({
                 type="datetime-local"
                 id="startDateTime"
                 className="form-control"
-                value={metadata.startDateTime}
+                value={unixTimestampToDatetimeLocal(metadata.startDateTime)}
                 onChange={handleMetadataChange}
               />
               {errors.startDateTime && (
