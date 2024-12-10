@@ -1,0 +1,10 @@
+/* Step2.module.css */
+.customList {
+  list-style-type: none;
+  padding: 0;
+}
+
+.customList li::before {
+  content: '•';
+  margin-right: 8px;
+}
